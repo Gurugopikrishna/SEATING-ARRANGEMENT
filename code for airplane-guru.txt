@@ -3,21 +3,27 @@ number = 24##total length of given elements
 row = 0
 c=0
 tempFilled = -1
-new=[1,59,3,5,29,41,47,17,7,11,13,61,19,2,4,8,16,10,6,12,14,15,21,18,9] ##given array
 
+new=[1,59,3,5,29,41,47,17,7,9,11,13,61,19,2,4,8,16,10,6,12,14,15,21,18] ##given array
+# new=[3,8,7,2,6] sample test case input
 
-def construct(seatsGrid):##constructing the grid from the 2-d array
+##constructing the grid from the 2-d array
+def construct(seatsGrid):
+    
+    print("ww - window seats")
+    print("mm - middle seats")
+    print("aa - asile seats")
     seats = []
     for i in seatsGrid:
         rows = i[1]
         cols = i[0]
-        # mat = [[-1]*cols]*rows
+        mat = [[-1]*cols]*rows
         mat = []
         for i in range(rows):
             mat.append([-1]*cols)
         seats.append(mat)
     return seats
-
+## function for printing the seats in the grid
 def printSeats(seats):
     blksize = len(str(number))
     rows = [x[1] for x in seatsGrid]
@@ -59,7 +65,7 @@ def printSeats(seats):
         print('    '.join(rowlist))
         print('    '.join(rowlistl))
 
-                
+ ##function for filling tha asile seats as the first priority   
 def fill_aa():
     # filled = 0
     global filled
@@ -104,7 +110,7 @@ def fill_aa():
                         c=c+1
         row += 1
 
-
+## function for filling the window seats for the second priority
 def fill_ww():
     row = 0
     global filled
@@ -130,7 +136,7 @@ def fill_ww():
                 break
             c=c+1
         row += 1
-
+## function for filling the middle seats as the third priority
 def fill_mm():
     row = 0
     tempFilled = 0
@@ -150,11 +156,11 @@ def fill_mm():
                         c=c+1
         row += 1
 
-
+## creating  rows and columns with respect to the given contraints
 seatsGrid = [[3,2], [4,3], [2,3], [3,4]]
 seats = construct(seatsGrid)
 # print seats
-length = len(seatsGrid)
+length = len(seatsGrid)##to find the total number of seats 
 
 
 
@@ -172,3 +178,193 @@ fill_mm()
 
 
 printSeats(seats)
+
+#sample test class
+#filled = 0##initialize filled as zero
+number = 24##total length of given elements
+row = 0
+c=0
+tempFilled = -1
+
+new=[1,59,3,5,29,41,47,17,7,9,11,13,61,19,2,4,8,16,10,6,12,14,15,21,18] ##given array
+
+##constructing the grid from the 2-d array
+def construct(seatsGrid):
+    
+    print("ww - window seats")
+    print("mm - middle seats")
+    print("aa - asile seats")
+    seats = []
+    for i in seatsGrid:
+        rows = i[1]
+        cols = i[0]
+        # mat = [[-1]*cols]*rows
+        mat = []
+        for i in range(rows):
+            mat.append([-1]*cols)
+        seats.append(mat)
+    return seats
+## function for printing the seats in the grid
+def printSeats(seats):
+    blksize = len(str(number))
+    rows = [x[1] for x in seatsGrid]
+    cols = [x[0] for x in seatsGrid]
+    maximum = max(rows)
+    top = True
+    for i in range(maximum):
+        rowlist = []
+        rowlistl = []
+        for j in range(length):
+            row = ' '
+            rowl = ' '
+            if len(seats[j]) <= i:
+                for k in range(cols[j]):
+                    row += ' '*blksize
+                    rowl += ' '*blksize
+                    row += ' '
+                    rowl += ' '
+            else:
+                row = ' '
+                rowl = ' '
+                for k in seats[j][i]:
+                    if k == -1:
+                        row += 'x'*blksize
+                        rowl += ' '*blksize
+                        row += ' '
+                        rowl += ' ' 
+                    else:
+                        row += str(k)+(' '*(blksize - len(str(k))))
+                        rowl += ' '*blksize
+                        row += ' '
+                        rowl += ' '
+            
+            rowlist.append(row)
+            rowlistl.append(rowl)
+        if top:
+            print('    '.join(rowlistl))
+            top = False
+        print('    '.join(rowlist))
+        print('    '.join(rowlistl))
+
+ ##function for filling tha asile seats as the first priority   
+def fill_aa():
+    # filled = 0
+    global filled
+    row = 0
+    global c
+    tempFilled = -1
+    while c <number and filled != tempFilled:
+        tempFilled = filled
+        for i in range(length):
+            if seatsGrid[i][1] > row:
+                if i == 0 and seatsGrid[i][0] > 1:
+                    filled = new[c]
+                    
+                    aisleCol = seatsGrid[i][0] - 1
+                    seats[i][row][aisleCol] = filled
+                    if c >= number:
+                        break
+                    c=c+1
+                elif i == length - 1 and seatsGrid[i][0] > 1:
+                    filled = new[c]
+                    
+                    aisleCol = 0
+                    seats[i][row][aisleCol] = filled
+                    if c >= number:
+                        break
+                    c=c+1
+                else:
+                    filled = new[c]
+                    
+                    aisleCol = 0
+                    seats[i][row][aisleCol] = filled
+                    if c >= number:
+                        break
+                    c=c+1
+                    if seatsGrid[i][0] > 1:
+                        filled = new[c]
+                        
+                        aisleCol = seatsGrid[i][0] - 1
+                        seats[i][row][aisleCol] = filled
+                        if c >= number:
+                            break
+                        c=c+1
+        row += 1
+
+## function for filling the window seats for the second priority
+def fill_ww():
+    row = 0
+    global filled
+    global c
+    global number
+    tempFilled = 0
+    while c < number and filled != tempFilled: ##cheks whether the value of c is less than number
+        tempFilled = filled
+        if seatsGrid[0][1] > row:
+            filled = new[c]
+            
+            window = 0
+            seats[0][row][window] = filled
+            if c >= number:
+                break
+            c=c+1 ##increments the value of c
+        if seatsGrid[length-1][1] > row:
+            filled = new[c]
+            
+            window = seatsGrid[length-1][0] - 1
+            seats[length-1][row][window] = filled
+            if c >= number:
+                break
+            c=c+1
+        row += 1
+## function for filling the middle seats as the third priority
+def fill_mm():
+    row = 0
+    tempFilled = 0
+    global c
+    global filled
+    while c < number and filled != tempFilled:
+        tempFilled = filled
+        for i in range(length):
+            if seatsGrid[i][1] > row:
+                if seatsGrid[i][0] > 2:
+                    for col in range(1, seatsGrid[i][0] - 1):
+                        filled = new[c]
+                        
+                        seats[i][row][col] = filled
+                        if c >= number:
+                            break
+                        c=c+1
+        row += 1
+
+## creating  rows and columns with respect to the given contraints
+seatsGrid = [[3,2], [4,3], [2,3], [3,4]]
+seats = construct(seatsGrid)
+# print seats
+length = len(seatsGrid)##to find the total number of seats 
+
+
+
+# Aisle seat
+fill_aa()
+
+# Window seat
+
+fill_ww()
+
+# Center seat
+row = 0
+tempFilled = 0
+fill_mm()
+
+
+printSeats(seats)
+
+# sample test case
+# [1,2],[3,4]
+# [3,8,7,2,6]
+# WW   AA  MM  WW 
+# 06   03  XX  XX
+# XX   07  XX  XX
+#      02  XX  XX
+#      08  XX  XX
