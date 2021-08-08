@@ -6,7 +6,7 @@ c=0
 tempFilled = -1
 b =0
 temp = 0
-def Log2(x):
+def Log2(x): ## check whether the number is power of 2
     return (math.log10(x) / math.log10(2));
 def isPowerOfTwo(n):
     return (math.ceil(Log2(n)) == math.floor(Log2(n)));
@@ -24,19 +24,20 @@ def prime(a):
                     break
                 j = j + 1
 
-            if f == 1:
-                temp = a[b]
+            if f == 1: # shows prime number
+                temp = a[b] ## swapping prime number to first position
                 a[b] = a[i]
                 a[i] = temp
-                b=b+1
+                b=b+1     ## incrementing b for getting the positions of numbers in array
 def multiplesof2(a):
     global b
     for i in range(b, len(a)):
-        if(isPowerOfTwo(a[i])):
-            temp = a[b]
-            a[b] = a[i]
-            a[i] = temp
-            b=b+1
+        if a[i] != 1:
+            if(isPowerOfTwo(a[i])): ## returns the multiple of 2
+                temp = a[b]
+                a[b] = a[i]
+                a[i] = temp ## swaps the multiples of 2 
+                b=b+1
 
  
 
@@ -195,9 +196,9 @@ seats = construct(seatsGrid)
 # print seats
 length = len(seatsGrid)##to find the total number of seats 
 
-a = [29,59,14,11,3,13,15,18,12,16,6,17,7,47,61,5,21,2,41,9,10,8,19,1,4]; 
-prime(a)
-multiplesof2(a)
+a = [29,59,14,11,3,13,15,18,12,16,6,17,7,47,61,5,21,2,41,9,10,8,19,1,4]; ## given array
+prime(a) ## calls the function of prime
+multiplesof2(a) #3 calls the function of multiples of 2
 
 # Aisle seat
 fill_aa()
